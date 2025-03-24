@@ -82,9 +82,6 @@ public:
   RNG(intType t_min, intType t_max) : m_min{ t_min }, m_max{ t_max }, distribution{ Distribution(m_min, m_max) } {}
   RNG() {}
 
-  // To avoid copying the seed, which is an error because random_device is not copyable, we delete copy.
-
-
   intType operator()() { return distribution(engine); }
 };
 
@@ -96,14 +93,4 @@ using i_config =
 using si_config = utils::
   RNG_Config<std::random_device, std::default_random_engine, short int, std::uniform_int_distribution<short int>>;
 
-
 }// namespace utils
-
-
-// pass cout
-// pass fout
-// pass stringstream
-
-// use these to fill vectors or something
-
-// namespace utils

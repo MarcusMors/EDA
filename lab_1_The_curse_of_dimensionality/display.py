@@ -20,24 +20,16 @@ def main():
         mus.append(mu)
         fig, ax = plt.subplots()
 
-        _, bins, _ = ax.hist(
-            data, bins=10, density=True, alpha=1, color="b", rwidth=0.9
-        )
+        _, bins, _ = ax.hist(data, bins=10, alpha=1, color="b", rwidth=0.9)
         # plt.hist(data, bins=25, density=True, alpha=0.6, color='b')
         bins = np.array(bins)
 
         xmin, xmax = plt.xlim()
         x = np.linspace(xmin, xmax, 100)
-        # p = norm.pdf(x, mu, std) * 4
-        # p = norm.pdf(x, mu, std) * len(data)
-        # print("------------------")
-        # for i in range(len(data)*2//5,len(data)*3//5):
-        #     print(f"{bins[i] - bins[i-1]=}")
-        # print("------------------")
-        p = norm.pdf(x, mu, std) * (bins[1] - bins[0]) * 350
-        # p = norm.pdf(x, mu, std) * (bins[1] - bins[0]) * 25000
-        # p = norm.pdf(x, mu, std) * (bins[1] - bins[0]) * 50000
+        p = norm.pdf(x, mu, std) * (bins[1] - bins[0]) * 5000
         print(len(data))
+        print("std: ", float(std))
+        print("average: ", mu)
         ax.plot(x, p, "-.", linewidth=1, color="red")
         ax.set_xlim(0, None)
 

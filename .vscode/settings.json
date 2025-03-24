@@ -2,5 +2,35 @@
   "C_Cpp.codeAnalysis.clangTidy.checks.disabled": [
     "readability-identifier-length",
     "cppcoreguidelines-avoid-magic-numbers"
-  ]
+  ],
+  "files.associations": {
+    "*.tpp": "cpp",
+    "array": "cpp",
+    "deque": "cpp",
+    "forward_list": "cpp",
+    "list": "cpp",
+    "string": "cpp",
+    "unordered_map": "cpp",
+    "unordered_set": "cpp",
+    "vector": "cpp",
+    "string_view": "cpp",
+    "initializer_list": "cpp",
+    "ranges": "cpp",
+    "span": "cpp",
+    "stacktrace": "cpp",
+    "regex": "cpp",
+    "valarray": "cpp",
+    "chrono": "cpp",
+    "format": "cpp",
+    "generator": "cpp",
+    "text_encoding": "cpp",
+    "__bit_reference": "cpp",
+    "__hash_table": "cpp",
+    "__split_buffer": "cpp",
+    "__tree": "cpp",
+    "filesystem": "cpp",
+    "iterator": "cpp",
+    "map": "cpp",
+    "set": "cpp"
+  }
 }
