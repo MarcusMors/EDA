@@ -89,6 +89,14 @@ public:
 };
 
 
+using li_config =
+  utils::RNG_Config<std::random_device, std::default_random_engine, long int, std::uniform_int_distribution<long int>>;
+using i_config =
+  utils::RNG_Config<std::random_device, std::default_random_engine, int, std::uniform_int_distribution<int>>;
+using si_config = utils::
+  RNG_Config<std::random_device, std::default_random_engine, short int, std::uniform_int_distribution<short int>>;
+
+
 }// namespace utils
 
 

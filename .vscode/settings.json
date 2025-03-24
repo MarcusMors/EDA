@@ -1,5 +1,6 @@
 {
   "C_Cpp.codeAnalysis.clangTidy.checks.disabled": [
-    "readability-identifier-length"
+    "readability-identifier-length",
+    "cppcoreguidelines-avoid-magic-numbers"
   ]
 }

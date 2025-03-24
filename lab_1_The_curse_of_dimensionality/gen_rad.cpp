@@ -76,17 +76,11 @@ long double distance(const vector<long double> &point_a, const vector<long doubl
   return sqrt(dist);
 }
 
-using li_config =
-  utils::RNG_Config<std::random_device, std::default_random_engine, long int, std::uniform_int_distribution<long int>>;
-using i_config =
-  utils::RNG_Config<std::random_device, std::default_random_engine, int, std::uniform_int_distribution<int>>;
-using si_config = utils::
-  RNG_Config<std::random_device, std::default_random_engine, short int, std::uniform_int_distribution<short int>>;
-
 
 int main()
 {
 
+  using namespace utils;
   using std::cout;
   using std::stringstream;
   using std::vector;
@@ -102,136 +96,102 @@ int main()
     return result;
   };
 
-  // vector<int> dims{ 10, 50, 100, 500, 1000, 2000, 5000 };
-  vector<int> dims{ 2, 3, 4 };
+  vector<int> dims{ 10, 50, 100, 500, 1000, 2000, 5000 };
+  // const vector<int> dims{ 2, 3, 4, 5 };
   // vector<int> dims{ 10, 50 };
   // vector<int> dims{ 2 };
-  // int n_points = 100;
-  int n_points = 2;
+  int n_points = 100;
+  // int n_points = 2;
   // int n_points = 10;
 
-  for (int i = 0; i < 100; i++) {
-    auto result = rng_between_0_and_1();
-    if (result < -1 or result > 2) { cout << result << endl; }
-  }
-  cout << "-------------------" << endl;
-  for (int i = 0; i < 100; i++) {
-    auto result = rng_base();
-    if (result < 0 or result > n_max) { cout << result << endl; }
+  for (auto &&dim : dims) {
+    // string str;
+    // cin >> str;
+
+    vector<vector<long double>> points(n_points, vector<long double>(dim));// points between 0 and 1
+    vector<vector<long double>> dist_matrix(n_points, vector<long double>(n_points));// points between 0 and 1
+    for (int i = 0; i < n_points; i++) {
+      int counter = 0;
+
+      std::generate(all(points[i]), [&]() {
+        const intType center = 500'000;
+        const long double d_center = 0.5;
+        const intType r = 500'000;
+        const long double d_r = 0.5;
+
+        const intType r2 = 250'000;
+        long double d_r2 = 0.25;
+
+        if (counter == 0) {
+          counter++;
+          auto result = rng_between_0_and_1();
+          return result;
+          // return static_cast<long double>(0.95);
+        }
+
+        // r2 -  all the others squared
+
+        for (int o = 0; o < counter; o++) {
+          // const long int p{ points[i][o] * n_max };
+          // const long int diff{ center - p };
+          const long double p{ points[i][o] };
+          const long double diff{ p - d_center };
+          const long double diff2{ diff * diff };
+
+          // cout << "p:" << p << endl;
+          // cout << "diff:" << diff << endl;
+          // r2 -= ((diff) * (diff));
+          d_r2 -= diff2;
+        }
+
+        d_r2 = sqrtl(d_r2);// 0.2 at d=2
+        // r2 = sqrt(r2);
+        // long int min = center - r2;
+        // long int max = center + r2;
+        long int min = center - static_cast<long int>(d_r2 * n_max);// at d=2 and 0.4975
+        long int max = center + static_cast<long int>(d_r2 * n_max);// at d=2 and 0.5025
+        utils::RNG<li_config> rng_base2(min, max);
+        auto rng2 = [&]() { return static_cast<long double>(rng_base2()) / static_cast<long double>(n_max); };
+
+        counter++;
+        auto result = rng2();
+        return result;
+      });
+      // 0.0025
+    }
+
+    // cout << "points: " << endl;
+    // for (int i = 0; i < n_points; i++) {
+    //   cout << "d: " << dim << "\ti: " << i << endl;
+    //   cout << std::fixed << std::setprecision(2) << points[i] << endl;
+
+    //   long double s = 0;
+    //   for (int j = 0; j < points[i].size(); j++) { s += (0.5 - points[i][j]) * (0.5 - points[i][j]); }
+    //   cout << "s: " << sqrtl(s) << endl;
+    // }
+
+    // cout << points << endl;
+
+    // calcular distancias en una matriz
+    for (int x = 0; x < n_points; x++) {
+      for (int y = x + 1; y < n_points; y++) { dist_matrix[x][y] = distance(points[x], points[y]); }
+    }
+
+    for (int x = 0; x < n_points; x++) {
+      for (int y = x + 1; y < n_points; y++) { cout << std::fixed << std::setprecision(9) << dist_matrix[x][y] << " "; }
+    }
+    cout << "\n";
+
+    // for (auto v : dist_matrix) {
+    //   for (auto e : v) { cout << std::fixed << std::setprecision(8) << e << " "; }
+    //   cout << "\n";
+    // }
   }
 
+  // print_random_data(cout);
+
+  // std::ofstream out{ "" };
+  // print_random_data(out);
+  // 4951
   return 0;
 }
-
-// int main()
-// {
-
-//   using std::cout;
-//   using std::stringstream;
-//   using std::vector;
-
-//   using intType = long int;
-//   const intType n_max = 1'000'000;
-//   // 250000000000
-//   utils::RNG<li_config> rng_base(0, n_max);
-//   auto rng_between_0_and_1 = [&]() {
-//     auto enumerator = static_cast<long double>(rng_base());
-//     auto denominator = static_cast<long double>(n_max);
-//     auto result = enumerator / denominator;
-//     return result;
-//   };
-
-//   // vector<int> dims{ 10, 50, 100, 500, 1000, 2000, 5000 };
-//   vector<int> dims{ 2, 3, 4 };
-//   // vector<int> dims{ 10, 50 };
-//   // vector<int> dims{ 2 };
-//   // int n_points = 100;
-//   int n_points = 2;
-//   // int n_points = 10;
-
-//   for (auto &&dim : dims) {
-//     // string str;
-//     // cin >> str;
-
-//     vector<vector<long double>> points(n_points, vector<long double>(dim));// points between 0 and 1
-//     vector<vector<long double>> dist_matrix(n_points, vector<long double>(n_points));// points between 0 and 1
-//     for (int i = 0; i < n_points; i++) {
-//       int counter = 0;
-
-//       std::generate(all(points[i]), [&]() {
-//         const intType center = 500'000;
-//         const long double d_center = 0.5;
-//         const intType r = 500'000;
-//         const long double d_r = 0.5;
-
-//         intType r2 = 250'000;
-//         long double d_r2 = 0.25;
-
-//         if (counter == 0) {
-//           counter++;
-//           auto result = rng_between_0_and_1();
-//           return result;
-//         }
-
-//         // r2 -  all the others squared
-
-//         for (int o = 0; o < counter; o++) {
-//           // const long int p{ points[i][o] * n_max };
-//           // const long int diff{ center - p };
-//           const long double p{ points[i][o] };
-//           const long double diff{ d_center - p };
-
-//           // cout << "p:" << p << endl;
-//           // cout << "diff:" << diff << endl;
-//           // r2 -= ((diff) * (diff));
-//           d_r2 -= ((diff) * (diff));
-//         }
-
-//         d_r2 = sqrt(d_r2);
-//         // r2 = sqrt(r2);
-
-//         // utils::RNG<li_config> rng_base2(center - r2, center + r2);
-//         utils::RNG<li_config> rng_base2(center - (d_r2 * n_max), center + (d_r2 * n_max));
-//         auto rng2 = [&]() { return static_cast<long double>(rng_base2()) / static_cast<long double>(n_max); };
-
-//         counter++;
-//         return rng2();
-//       });
-//       //
-//     }
-
-//     cout << "points: " << endl;
-//     // std::string str = "";
-//     // cin >> str;
-//     for (int i = 0; i < n_points; i++) {
-//       cout << "i: " << i << "\td: " << dim << endl;
-//       for (auto &&p : points) { cout << std::fixed << std::setprecision(2) << p << " "; }
-//       cout << endl;
-//     }
-
-//     // cout << points << endl;
-
-//     // calcular distancias en una matriz
-//     for (int x = 0; x < n_points; x++) {
-//       for (int y = x + 1; y < n_points; y++) { dist_matrix[x][y] = distance(points[x], points[y]); }
-//     }
-
-//     for (int x = 0; x < n_points; x++) {
-//       for (int y = x + 1; y < n_points; y++) { cout << std::fixed << std::setprecision(2) << dist_matrix[x][y] << "
-//       "; }
-//     }
-//     cout << "\n";
-
-//     // for (auto v : dist_matrix) {
-//     //   for (auto e : v) { cout << std::fixed << std::setprecision(8) << e << " "; }
-//     //   cout << "\n";
-//     // }
-//   }
-
-//   // print_random_data(cout);
-
-//   // std::ofstream out{ "" };
-//   // print_random_data(out);
-//   // 4951
-//   return 0;
-// }
