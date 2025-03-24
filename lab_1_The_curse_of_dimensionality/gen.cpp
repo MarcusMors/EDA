@@ -1,3 +1,5 @@
+#include "../utils/RNG.hpp"
+#include <algorithm>
 #include <bits/stdc++.h>
 #include <cmath>
 #include <fstream>
@@ -8,11 +10,6 @@
 #include <sstream>
 #include <string>
 #include <vector>
-
-#define fastio()                         \
-  std::ios_base::sync_with_stdio(false); \
-  std::cin.tie(NULL);                    \
-  std::cout.tie(NULL)
 
 // __gcd(value1, value2)
 // append ll to get the long long version
@@ -62,29 +59,6 @@ template<class T> std::ostream &operator<<(ostream &os, vector<float> v)
 }
 
 
-template<class OutStreamType = std::ostream> void print_random_data(OutStreamType &out_stream, int dimensions)
-{
-  using Seed = std::random_device;
-  using Engine = std::default_random_engine;
-  // supported int Types // check https://en.cppreference.com/w/cpp/header/random
-  // short, int, long, long long,
-  // unsigned short, unsigned int, unsigned long, or unsigned long long
-  using intType = int;
-  using Distribution = std::uniform_int_distribution<intType>;
-
-  Seed seed;
-  Engine engine{ seed() };
-
-  const intType n_max = 1'000'000;
-  const intType n_min = 0;
-  Distribution n_distribution(n_min, n_max);
-  auto generate_n = [&]() { return n_distribution(engine); };
-
-  using std::endl;
-  for (intType i = 0; i < dimensions; i++) { out_stream << double(double(generate_n()) / double(n_max)) << ' '; }
-  out_stream << endl;
-}
-
 double distance(const vector<double> &point_a, const vector<double> &point_b)
 {
   double dist = 0;
@@ -100,34 +74,45 @@ double distance(const vector<double> &point_a, const vector<double> &point_b)
   return sqrt(dist);
 }
 
+
+template<class OutStreamType = std::ostream> void print_random_data(OutStreamType &out_stream, int dimensions)
+{
+  using intType = int;
+  const intType n_max = 1'000'000;
+  utils::RNG<> rng_base(0, n_max);
+  auto rng_between_0_and_1 = [&]() { return double(double(rng_base()) / double(n_max)); };
+
+  using std::endl;
+  for (intType i = 0; i < dimensions; i++) { out_stream << rng_between_0_and_1() << ' '; }
+  out_stream << endl;
+}
+
 int main()
 {
+
   using std::cout;
   using std::stringstream;
   using std::vector;
+
+  using intType = int;
+  const intType n_max = 1'000'000;
+  utils::RNG<> rng_base(0, n_max);
+  auto rng_between_0_and_1 = [&]() { return double(double(rng_base()) / double(n_max)); };
+
   vector<int> dims{ 10, 50, 100, 500, 1000, 2000, 5000 };
+  // vector<int> dims{ 10, 50 };
+  // vector<int> dims{ 2 };
   int n_points = 100;
+  // int n_points = 10;
 
   for (auto &&dim : dims) {
     // string str;
     // cin >> str;
 
-    vector<vector<double>> points(100, vector<double>(dim));// points between 0 and 1
-    vector<vector<double>> dist_matrix(100, vector<double>(100));// points between 0 and 1
+    vector<vector<double>> points(n_points, vector<double>(dim));// points between 0 and 1
+    vector<vector<double>> dist_matrix(n_points, vector<double>(n_points));// points between 0 and 1
 
-    for (int i = 0; i < n_points; i++) {
-      stringstream point;
-      print_random_data(point, dim);
-      cout << point.str() << endl;
-
-      vector<double> vals_of_point{};
-      for (int d = 0; d < dim; d++) {
-        double val;
-        point >> val;
-        vals_of_point.push_back(val);
-      }
-      points[i] = (vector<double>(all(vals_of_point)));
-    }
+    for (int i = 0; i < n_points; i++) { std::generate(all(points[i]), rng_between_0_and_1); }
 
     // cout << "points: " << endl;
     // cin >> str;
@@ -145,12 +130,9 @@ int main()
     }
 
     for (int x = 0; x < n_points; x++) {
-      for (int y = x + 1; y < n_points; y++) {
-        cout << std::fixed << std::setprecision(1) << dist_matrix[x][y] << " ";
-        // dist_matrix[x][y] = distance(points[x], points[y]);
-      }
-      cout << "\n";
+      for (int y = x + 1; y < n_points; y++) { cout << std::fixed << std::setprecision(8) << dist_matrix[x][y] << " "; }
     }
+    cout << "\n";
 
     // for (auto v : dist_matrix) {
     //   for (auto e : v) { cout << std::fixed << std::setprecision(8) << e << " "; }
@@ -162,6 +144,6 @@ int main()
 
   // std::ofstream out{ "" };
   // print_random_data(out);
-
+  // 4951
   return 0;
 }
