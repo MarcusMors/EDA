@@ -1,7 +1,8 @@
 {
   "C_Cpp.codeAnalysis.clangTidy.checks.disabled": [
     "readability-identifier-length",
-    "cppcoreguidelines-avoid-magic-numbers"
+    "cppcoreguidelines-avoid-magic-numbers",
+    "hicpp-use-emplace"
   ],
   "files.associations": {
     "*.tpp": "cpp",
