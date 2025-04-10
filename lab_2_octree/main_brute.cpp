@@ -80,7 +80,7 @@ int main()
   };
 
   cin >> n;
-  while (--n) {
+  while (n--) {
     char option{};
     cin >> option;
     Point p{};

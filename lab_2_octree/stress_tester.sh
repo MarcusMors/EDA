@@ -340,7 +340,7 @@ resolve_exec_command() {
                 eval "${exec_var}=\"./${basename}\""
             else
 								decho "binary of \"${basename}.cpp\" was not found."
-                g++-11 -std=c++20 "${solution}" -o "${basename}.out"
+                g++-14 -std=c++20 "${solution}" -o "${basename}.out"
 								decho "${basename}.cpp was compiled as \"${basename}.out\"."
 								eval "${exec_var}=\"./${basename}.out\""
             fi

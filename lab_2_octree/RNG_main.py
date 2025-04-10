@@ -30,19 +30,27 @@ def scprint(*args, end="\n"):
 
 
 # n_list
-n = random.randint(0, 10)  # Number of inputs
+n = random.randint(2, 100)  # Number of inputs
 
 
 sprint(n)
+m = random.randint(-3, 3)
+minimum = -10 + m
+maximum = 10 + m
 
-for _ in range(n):
-    x = random.randint(-10, 10)  # range of point
-    y = random.randint(-10, 10)  # range of point
-    z = random.randint(-10, 10)  # range of point
+for i in range(n):
+    x = random.randint(minimum, maximum)  # range of point
+    y = random.randint(minimum, maximum)  # range of point
+    z = random.randint(minimum, maximum)  # range of point
+    if i == 0:
+        print(f"{minimum},{minimum},{minimum}")
+    if i == n - 1:
+        print(f"{maximum},{maximum},{maximum}")
     print(f"{x},{y},{z}")
 
+
 # n_list queries
-n = random.randint(0, 10)  # Number of queries
+n = random.randint(5, 25)  # Number of queries
 exists = "e"  # P -> Bool
 insert = "i"  # P
 find_closest = (
@@ -53,13 +61,13 @@ options = [exists, insert, find_closest]
 for _ in range(n):
     query = random.choice(options)
     print(f"{query}")
-    x = random.randint(-10, 10)  # range of point
-    y = random.randint(-10, 10)  # range of point
-    z = random.randint(-10, 10)  # range of point
+    x = random.randint(minimum, maximum)  # range of point
+    y = random.randint(minimum, maximum)  # range of point
+    z = random.randint(minimum, maximum)  # range of point
     print(f"{x},{y},{z}")
 
     if query == find_closest:
-        r = random.randint(0, 10)  # radius
+        r = random.randint(0, (maximum + abs(minimum)) // 2)  # radius
         print(f"{r}")
 
 
@@ -69,5 +77,5 @@ print()
 # DO NOT TOUCH THESE LINES
 # -------------------------------------------------------------------------
 
-my_sol = "main.cpp"
-brute_sol = "main_brute.cpp"
+my_sol="main.cpp"
+brute_sol="main_brute.cpp"

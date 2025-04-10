@@ -1,3 +1,6 @@
+#ifndef __INTERFACE_H__
+#define __INTERFACE_H__
+
 // Copyright (C) 2025 José Enrique Vilca Campana
 //
 // This program is free software: you can redistribute it and/or modify
@@ -40,7 +43,7 @@ using vii = std::vector<ii>;
 using vvii = std::vector<vii>;
 using vvi = std::vector<vi>;
 
-const int I_INF = std::numeric_limits<int>::max();
+const double I_INF = std::numeric_limits<double>::max() - 1000000;
 const eda::Point P_INF = { .x = I_INF, .y = I_INF, .z = I_INF };
 const eda::Point P_NINF = { .x = -I_INF, .y = -I_INF, .z = -I_INF };
 
@@ -62,10 +65,11 @@ namespace eda {
 // -10,118,0
 // 99,27,37
 //
-enum struct interface : char {
+enum interface : char {
   exists = 'e',// P -> Bool
   insert = 'i',// P
   find_closest = 'c',// P,int -> *P -> if (nulltpr) {return - <int>::min();}  else { return *P; }
+  print = 'p',// P,int -> *P -> if (nulltpr) {return - <int>::min();}  else { return *P; }
   other,// P,int -> *P -> if (nulltpr) {return - <int>::min();}  else { return *P; }
 };
 
@@ -78,3 +82,5 @@ double distance(Point lhs, Point rhs)
 }
 
 }// namespace eda
+
+#endif// __INTERFACE_H__  7514
