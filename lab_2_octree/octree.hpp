@@ -166,10 +166,11 @@ private:
 public:
   double h() const { return top_far_right_corner.z - bottom_near_left_corner.z; }
   eda::Point bottom_left() const { return bottom_near_left_corner; }
+  // double h() const { return top_far_right_corner.x - bottom_near_left_corner.x; }
   void print()
   {
     if (not is_leaf()) {
-      cout << "octree:" << "(" << bottom_left() << ")" << " " << h() << endl;
+      cout << "octree:" << "(" << bottom_left() << ")" << " " << "h: (" << h() << ")" << endl;
       for (int i = 0; i < 8; i++) { children[i]->print_r(1); }
     } else {
       // cout << "leaf:" << " ";
@@ -189,7 +190,7 @@ public:
     cin >> str;
     if (not is_leaf()) {
       tab(deep);
-      cout << "octree:" << "(" << bottom_left() << ")" << " " << h() << endl;
+      cout << "octree:" << "(" << bottom_left() << ")" << " " << "h: (" << h() << ")" << endl;
       for (int i = 0; i < 8; i++) { children[i]->print_r(deep + 1); }
     } else {
       tab(deep);

@@ -50,7 +50,7 @@ eda::Point max_p{};
 vector<eda::Point> input_file()
 {
   int i = 0;
-  fstream file("points1.csv");
+  fstream file("points2.csv");
 
   vector<eda::Point> ps{};
   for (eda::Point p; file >> p; i++) {
@@ -100,7 +100,7 @@ int main()
   // vector<eda::Point> ps = input_console();
 
 
-  int threshold = 4;
+  int threshold = 50;
 
   eda::Octree octree(min_p, max_p, threshold, ps);
 
