@@ -71,7 +71,7 @@ std::ostream &operator<<(std::ostream &os, const eda::Point p) { return os << p.
 std::istream &operator>>(std::istream &is, eda::Point &p)
 {
   char g;
-  int x, y, z;
+  double x, y, z;
   if ((is >> x) and (is >> g and g == ',') and (is >> y) and (is >> g and g == ',') and (is >> z)) {
     p = eda::Point{ x, y, z };
     return is;

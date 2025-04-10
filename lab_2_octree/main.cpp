@@ -50,11 +50,10 @@ eda::Point max_p{};
 vector<eda::Point> input_file()
 {
   int i = 0;
-  fstream file{};
-  file.open("points1.csv");
+  fstream file("points1.csv");
 
   vector<eda::Point> ps{};
-  for (eda::Point p; cin >> p; i++) {
+  for (eda::Point p; file >> p; i++) {
     min_x = min(min_x, p.x);
     min_y = min(min_y, p.y);
     min_z = min(min_z, p.z);
